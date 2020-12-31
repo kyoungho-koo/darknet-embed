@@ -152,4 +152,4 @@ cfg_section test_1_cfg[] = {
 
 };
 
-int test_1_cfg_size = 14;
+int test_1_cfg_size = 15;

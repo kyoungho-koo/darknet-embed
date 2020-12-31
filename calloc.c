@@ -2,6 +2,7 @@
 #include "debug.h"
 
 
+#define ARM
 #ifdef OPENSSD
 static void *heap = HEAP_STAR_ADDR;
 #define MAX_HEAP_ADDR RESERVED0_END_ADDR
@@ -16,7 +17,7 @@ void *embed_calloc(int num_val, int size_val)
 {
 	void *ret = heap;
 	heap += num_val*size_val;
-#ifdef OPENSSD
+#if defined(OPENSSD) || defined(ARM)
 	if (heap >= MAX_HEAP_ADDR) {
 #else
 	if (heap <= MAX_HEAP_ADDR) {
