@@ -22,8 +22,10 @@ double get_wall_time()
     }
     return (double)time.tv_sec + (double)time.tv_usec * .000001;
 }
+*/
 
 
+#ifndef OPENSSD
 double what_time_is_it_now()
 {
     struct timeval time;
@@ -32,7 +34,7 @@ double what_time_is_it_now()
     }
     return (double)time.tv_sec + (double)time.tv_usec * .000001;
 }
-*/
+#endif
 
 
 int *read_intlist(char *gpu_list, int *ngpus, int d)

@@ -119,7 +119,7 @@ static int entry_index(layer l, int batch, int location, int entry)
 
 void forward_yolo_layer(const layer l, network net)
 {
-	xil_printf("\n[%s]\r\n",__func__);
+//	xil_printf("\n[%s]\r\n",__func__);
     int i,j,b,t,n;
     memcpy(l.output, net.input, l.outputs*l.batch*sizeof(float));
 

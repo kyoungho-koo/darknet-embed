@@ -3,8 +3,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#include "debug.h"
+#ifdef OPENSSD
 #include "../memory_map.h"
-#include "xil_printf.h"
+#endif
 
 #define TEST
 #define SECRET_NUM -1234

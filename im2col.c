@@ -1,6 +1,6 @@
 #include "im2col.h"
 #include <stdio.h>
-#include "xil_printf.h"
+#include "debug.h"
 
 //static int num_get_pixel;
 float im2col_get_pixel(float *im, int height, int width, int channels,

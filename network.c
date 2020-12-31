@@ -169,10 +169,10 @@ network *make_network(int n)
 
 void forward_network(network *netp)
 {
-	xil_printf("\n[%s]\r\n",__func__);
+//	xil_printf("\n[%s]\r\n",__func__);
     network net = *netp;
     int i;
-    xil_printf("[%s] net.n : %d \r\n",__func__, net.n);
+//  xil_printf("[%s] net.n : %d \r\n",__func__, net.n);
     for(i = 0; i < net.n; ++i){
         net.index = i;
         layer l = net.layers[i];
@@ -191,7 +191,7 @@ void forward_network(network *netp)
 
 void calc_network_cost(network *netp)
 {
-	xil_printf("\n[%s]\n",__func__);
+//	xil_printf("\n[%s]\n",__func__);
     network net = *netp;
     int i;
     float sum = 0;
@@ -272,7 +272,7 @@ void top_predictions(network *net, int k, int *index)
 
 float *network_predict(network *net, float *input)
 {
-	xil_printf("\n[%s]\n",__func__);
+//	xil_printf("\n[%s]\n",__func__);
     network orig = *net;
     net->input = input;
     net->truth = 0;

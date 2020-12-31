@@ -65,7 +65,7 @@ void resize_maxpool_layer(maxpool_layer *l, int w, int h)
 
 void forward_maxpool_layer(const maxpool_layer l, network net)
 {
-	xil_printf("\n[%s]\r\n",__func__);
+//	xil_printf("\n[%s]\r\n",__func__);
     int b,i,j,k,m,n;
     int w_offset = -l.pad/2;
     int h_offset = -l.pad/2;

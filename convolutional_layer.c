@@ -4,7 +4,8 @@
 #include "blas.h"
 #include "gemm.h"
 #include <stdio.h>
-#include "xil_printf.h"
+#include "debug.h"
+#include <math.h>
 
 #ifdef AI2
 #include "xnor_layer.h"
@@ -46,6 +47,7 @@ void binarize_cpu(float *input, int n, float *binary)
     }
 }
 
+/*
 void binarize_input(float *input, int n, int size, float *binary)
 {
     int i, s;
@@ -60,6 +62,7 @@ void binarize_input(float *input, int n, int size, float *binary)
         }
     }
 }
+*/
 
 int convolutional_out_height(convolutional_layer l)
 {
@@ -173,7 +176,7 @@ convolutional_layer make_convolutional_layer(int batch, int h, int w, int c, int
     l.workspace_size = get_workspace_size(l);
     l.activation = activation;
 
-    xil_printf("conv  %5d %2d x%2d /%2d  %4d x%4d x%4d   ->  %4d x%4d x%4d  %5.3f BFLOPs\n", n, size, size, stride, w, h, c, l.out_w, l.out_h, l.out_c, (2.0 * l.n * l.size*l.size*l.c/l.groups * l.out_h*l.out_w)/1000000000.);
+    printf("conv  %5d %2d x%2d /%2d  %4d x%4d x%4d   ->  %4d x%4d x%4d  %5.3f BFLOPs\n", n, size, size, stride, w, h, c, l.out_w, l.out_h, l.out_c, (2.0 * l.n * l.size*l.size*l.c/l.groups * l.out_h*l.out_w)/1000000000.);
 
     return l;
 }
@@ -263,7 +266,7 @@ void backward_bias(float *bias_updates, float *delta, int batch, int n, int size
 
 void forward_convolutional_layer(convolutional_layer l, network net)
 {
-	xil_printf("\n[%s]\r\n",__func__);
+//	xil_printf("\n[%s]\r\n",__func__);
     int i, j;
 
     fill_cpu(l.outputs*l.batch, 0, l.output, 1);

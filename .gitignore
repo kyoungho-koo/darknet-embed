@@ -1,0 +1,6 @@
+obj/*
+*.o
+*.swp
+*.files
+*.out
+tags

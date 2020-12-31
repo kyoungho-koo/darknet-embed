@@ -528,7 +528,7 @@ void test_load_convolutional_weights(layer* l, int* idx)
 
 void test_load_weights_upto(network *net, int start, int cutoff)
 {
-	xil_printf("[%s]\n",__func__);
+//	xil_printf("[%s]\n",__func__);
     int major;
     int minor;
     int revision;
@@ -570,7 +570,7 @@ void test_load_weights_upto(network *net, int start, int cutoff)
 
 void test_load_weights(network *net)
 {
-	xil_printf("[%s]\n",__func__);
+//	xil_printf("[%s]\n",__func__);
     test_load_weights_upto(net, 0, net->n);
 }
 #endif
