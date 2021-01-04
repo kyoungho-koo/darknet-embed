@@ -2,7 +2,7 @@
 #include "debug.h"
 
 
-#define ARM
+//#define ARM
 #ifdef OPENSSD
 static void *heap = HEAP_STAR_ADDR;
 #define MAX_HEAP_ADDR RESERVED0_END_ADDR

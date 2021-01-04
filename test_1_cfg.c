@@ -147,7 +147,7 @@ cfg_section test_1_cfg[] = {
 	{MAXPOOL, maxpool5, 2},
 	{CONVOLUTIONAL, convolutional6, 6},
 	{CONVOLUTIONAL, convolutional7, 6},
-	{CONVOLUTIONAL, convolutional8, 6},
+	{CONVOLUTIONAL, convolutional8, 5},
 	{YOLO, yolo1, 8},
 
 };
