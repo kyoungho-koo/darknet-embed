@@ -106,7 +106,7 @@ typedef struct network network;
 struct layer;
 typedef struct layer layer;
 
-struct layer{
+struct layer {
     LAYER_TYPE type;
     ACTIVATION activation;
     COST_TYPE cost_type;
