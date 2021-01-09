@@ -48,7 +48,7 @@ layer make_yolo_layer(int batch, int w, int h, int n, int total, int *mask, int 
     l.forward = forward_yolo_layer;
     l.backward = backward_yolo_layer;
 
-    printf("yolo\n");
+    printf(",yolo\n");
     srand(0);
 
     return l;

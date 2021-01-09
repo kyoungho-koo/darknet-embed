@@ -42,7 +42,7 @@ maxpool_layer make_maxpool_layer(int batch, int h, int w, int c, int size, int s
     l.delta =   embed_calloc(output_size, sizeof(float));
     l.forward = forward_maxpool_layer;
     l.backward = backward_maxpool_layer;
-    printf("max          %d x %d / %d  %4d x%4d x%4d   ->  %4d x%4d x%4d\n", size, size, stride, w, h, c, l.out_w, l.out_h, l.out_c);
+    printf(",max,       , %d x %d / %d,   %4d x%4d x%4d,   ->,  %4d x%4d x%4d\n", size, size, stride, w, h, c, l.out_w, l.out_h, l.out_c);
     return l;
 }
 
