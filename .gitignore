@@ -4,3 +4,4 @@ obj/*
 *.files
 *.out
 tags
+darknet
