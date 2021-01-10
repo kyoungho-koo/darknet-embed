@@ -210,6 +210,7 @@ int get_predicted_class_network(network *net)
     return max_index(net->output, net->outputs);
 }
 
+/*
 void backward_network(network *netp)
 {
     network net = *netp;
@@ -229,6 +230,7 @@ void backward_network(network *netp)
         l.backward(l, net);
     }
 }
+*/
 
 
 void set_temp_network(network *net, float t)

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "debug.h"
 #ifdef OPENSSD
@@ -14,6 +15,7 @@
 
 #define SMART_SSD
 #define YOLOV3_WEIGHTS_SIZE   0x21CB1CC
+
 
 void *embed_calloc(int num_val, int size_val) ;
 void embed_free (void *p) ;
@@ -104,18 +106,17 @@ struct network;
 typedef struct network network;
 
 struct layer;
+struct layer_q;
 typedef struct layer layer;
+typedef struct layer_q layer_q;
 
 struct layer {
     LAYER_TYPE type;
     ACTIVATION activation;
     COST_TYPE cost_type;
     void (*forward)   (struct layer, struct network);
-    void (*backward)  (struct layer, struct network);
+//    void (*backward)  (struct layer, struct network);
     void (*update)    (struct layer, update_args);
-    void (*forward_gpu)   (struct layer, struct network);
-    void (*backward_gpu)  (struct layer, struct network);
-    void (*update_gpu)    (struct layer, update_args);
     int batch_normalize;
     int shortcut;
     int batch;
@@ -226,11 +227,15 @@ struct layer {
     float * biases;
     float * bias_updates;
 
+	int quantized;
+
     float * scales;
     float * scale_updates;
 
     float * weights;
+	int8_t * weights_int8;
     float * weight_updates;
+	int8_t * output_int8;
 
     float * delta;
     float * output;
@@ -324,95 +329,199 @@ struct layer {
     tree *softmax_tree;
 
     size_t workspace_size;
+};
 
-#ifdef GPU
-    int *indexes_gpu;
+struct layer_q {
+	LAYER_TYPE type;
+	ACTIVATION activation;
+	COST_TYPE cost_type;
+	void(*forward)   (struct layer_q, struct network_state);
+	void(*backward)  (struct layer_q, struct network_state);
+	void(*update)    (struct layer_q, int, float, float, float);
+	int batch_normalize;
+	int shortcut;
+	int batch;
+	int forced;
+	int flipped;
+	int inputs;
+	int outputs;
+	int truths;
+	int h, w, c;
+	int out_h, out_w, out_c;
+	int n;
+	int max_boxes;
+	int groups;
+	int size;
+	int side;
+	int stride;
+	int reverse;
+	int pad;
+	int sqrt;
+	int flip;
+	int index;
+	int binary;
+	int xnor;
+	int use_bin_output;
+	int steps;
+	int hidden;
+	float dot;
+	float angle;
+	float jitter;
+	float saturation;
+	float exposure;
+	float shift;
+	float ratio;
+	int focal_loss;
+	int softmax;
+	int classes;
+	int coords;
+	int background;
+	int rescore;
+	int objectness;
+	int does_cost;
+	int joint;
+	int noadjust;
+	int reorg;
+	int log;
 
-    float *z_gpu;
-    float *r_gpu;
-    float *h_gpu;
+	int *mask;
+	int total;
+	float bflops;
 
-    float *temp_gpu;
-    float *temp2_gpu;
-    float *temp3_gpu;
+	int adam;
+	float B1;
+	float B2;
+	float eps;
+	float *m_gpu;
+	float *v_gpu;
+	int t;
+	float *m;
+	float *v;
 
-    float *dh_gpu;
-    float *hh_gpu;
-    float *prev_cell_gpu;
-    float *cell_gpu;
-    float *f_gpu;
-    float *i_gpu;
-    float *g_gpu;
-    float *o_gpu;
-    float *c_gpu;
-    float *dc_gpu; 
+	tree *softmax_tree;
+	int  *map;
 
-    float *m_gpu;
-    float *v_gpu;
-    float *bias_m_gpu;
-    float *scale_m_gpu;
-    float *bias_v_gpu;
-    float *scale_v_gpu;
+	float alpha;
+	float beta;
+	float kappa;
 
-    float * combine_gpu;
-    float * combine_delta_gpu;
+	float coord_scale;
+	float object_scale;
+	float noobject_scale;
+	float class_scale;
+	int bias_match;
+	int random;
+	float ignore_thresh;
+	float truth_thresh;
+	float thresh;
+	int classfix;
+	int absolute;
 
-    float * prev_state_gpu;
-    float * forgot_state_gpu;
-    float * forgot_delta_gpu;
-    float * state_gpu;
-    float * state_delta_gpu;
-    float * gate_gpu;
-    float * gate_delta_gpu;
-    float * save_gpu;
-    float * save_delta_gpu;
-    float * concat_gpu;
-    float * concat_delta_gpu;
+	int dontload;
+	int dontloadscales;
 
-    float * binary_input_gpu;
-    float * binary_weights_gpu;
+	float temperature;
+	float probability;
+	float scale;
 
-    float * mean_gpu;
-    float * variance_gpu;
+	int *indexes;
+	float *rand;
+	float *cost;
+	char  *cweights;
+	float *state;
+	float *prev_state;
+	float *forgot_state;
+	float *forgot_delta;
+	float *state_delta;
 
-    float * rolling_mean_gpu;
-    float * rolling_variance_gpu;
+	float *concat;
+	float *concat_delta;
 
-    float * variance_delta_gpu;
-    float * mean_delta_gpu;
+	float *binary_weights;
 
-    float * x_gpu;
-    float * x_norm_gpu;
-    float * weights_gpu;
-    float * weight_updates_gpu;
-    float * weight_change_gpu;
+	char *align_bit_weights_gpu;
+	float *mean_arr_gpu;
+	float *align_workspace_gpu;
+	float *transposed_align_workspace_gpu;
+	int align_workspace_size;
 
-    float * biases_gpu;
-    float * bias_updates_gpu;
-    float * bias_change_gpu;
+	char *align_bit_weights;
+	float *mean_arr;
+	int align_bit_weights_size;
+	int lda_align;
+	int new_lda;
+	int bit_align;
 
-    float * scales_gpu;
-    float * scale_updates_gpu;
-    float * scale_change_gpu;
+	float *biases;
+	float *biases_quant;
+	float *bias_updates;
 
-    float * output_gpu;
-    float * loss_gpu;
-    float * delta_gpu;
-    float * rand_gpu;
-    float * squared_gpu;
-    float * norms_gpu;
-#ifdef CUDNN
-    cudnnTensorDescriptor_t srcTensorDesc, dstTensorDesc;
-    cudnnTensorDescriptor_t dsrcTensorDesc, ddstTensorDesc;
-    cudnnTensorDescriptor_t normTensorDesc;
-    cudnnFilterDescriptor_t weightDesc;
-    cudnnFilterDescriptor_t dweightDesc;
-    cudnnConvolutionDescriptor_t convDesc;
-    cudnnConvolutionFwdAlgo_t fw_algo;
-    cudnnConvolutionBwdDataAlgo_t bd_algo;
-    cudnnConvolutionBwdFilterAlgo_t bf_algo;
-#endif
-#endif
+	int quantized;
+
+	float *scales;
+	float *scale_updates;
+
+	float *weights;
+	int8_t * weights_int8;
+	float *weight_updates;
+	//float *weights_quant_multipler;
+	float weights_quant_multipler;
+	float input_quant_multipler;
+
+	float *col_image;
+	int   * input_layers;
+	int   * input_sizes;
+	float * delta;
+	float * output;
+	int output_pinned;
+	//float *output_multipler;
+	float output_multipler;
+	int8_t * output_int8;
+	float * squared;
+	float * norms;
+
+	float * spatial_mean;
+	float * mean;
+	float * variance;
+
+	//float * mean_delta;
+	//float * variance_delta;
+
+	float * rolling_mean;
+	float * rolling_variance;
+
+	float * x;
+	float * x_norm;
+
+	struct layer *input_layer;
+	struct layer *self_layer;
+	struct layer *output_layer;
+
+	struct layer *input_gate_layer;
+	struct layer *state_gate_layer;
+	struct layer *input_save_layer;
+	struct layer *state_save_layer;
+	struct layer *input_state_layer;
+	struct layer *state_state_layer;
+
+	struct layer *input_z_layer;
+	struct layer *state_z_layer;
+
+	struct layer *input_r_layer;
+	struct layer *state_r_layer;
+
+	struct layer *input_h_layer;
+	struct layer *state_h_layer;
+
+	float *z_cpu;
+	float *r_cpu;
+	float *h_cpu;
+
+	float *binary_input;
+	uint32_t *bin_re_packed_input;
+	char *t_bit_input;
+
+	size_t workspace_size;
 };
 
 void free_layer(layer);
@@ -481,6 +590,68 @@ typedef struct network{
 
 
 } network;
+
+// for Quantization
+typedef struct network_q {
+	int quantized;
+	float *workspace;
+	int n;
+	int batch;
+	float *input_calibration;
+	int input_calibration_size;
+	uint64_t *seen;
+	float epoch;
+	int subdivisions;
+	float momentum;
+	float decay;
+	layer_q *layers;
+	int outputs;
+	float *output;
+	learning_rate_policy policy;
+
+	float learning_rate;
+	float gamma;
+	float scale;
+	float power;
+	int time_steps;
+	int step;
+	int max_batches;
+	float *scales;
+	int   *steps;
+	int num_steps;
+	int burn_in;
+
+	int adam;
+	float B1;
+	float B2;
+	float eps;
+
+	int inputs;
+	int h, w, c;
+	int max_crop;
+	int min_crop;
+	float angle;
+	float aspect;
+	float exposure;
+	float saturation;
+	float hue;
+
+	int gpu_index;
+	tree *hierarchy;
+	int do_input_calibration;
+} network_q;
+
+// for Quantization
+typedef struct network_state {
+	float *truth;
+	float *input;
+	int8_t *input_int8;
+	float *delta;
+	float *workspace;
+	int train;
+	int index;
+	network_q net;
+} network_state;
 
 typedef struct {
     int w;

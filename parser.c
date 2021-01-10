@@ -129,7 +129,8 @@ LAYER_TYPE string_to_layer_type(char * type)
 }
 
 
-typedef struct size_params{
+typedef struct size_params {
+	int quantized;
     int batch;
     int inputs;
     int h;
@@ -167,7 +168,10 @@ convolutional_layer parse_convolutional_sections(kvp *section, int size, size_pa
     int xnor = __section_find_int(section, size, "xnor", 0);
 
 
-    convolutional_layer layer = make_convolutional_layer(batch,h,w,c,n,groups,layer_size,stride,padding,activation, batch_normalize, binary, xnor, params.net->adam);
+    int quantized = params.quantized;
+    if (params.index == 0 || activation == LINEAR || (params.index > 1 && stride>1) || size==1)
+        quantized = 0; // disable Quantized for 1st and last layers
+    convolutional_layer layer = make_convolutional_layer(batch,h,w,c,n,groups,layer_size,stride,padding,activation, batch_normalize, binary, xnor, params.net->adam, quantized);
     layer.flipped = __section_find_int(section, size, "flipped", 0);
     layer.dot = __section_find_float(section, size, "dot", 0);
 
