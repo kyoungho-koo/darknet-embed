@@ -38,9 +38,9 @@ load_args get_base_args(network *net)
 network *embed_load_network(cfg_section *cfg, int size, int clear, int quantized)
 {
     //network *net = parse_network_cfg(cfg);
-	xil_printf("[%s]\n",__func__);
+    xil_printf("[%s]\r\n",__func__);
     network *net = embed_parse_network_cfg(cfg, size, quantized);
-	test_load_weights(net);
+    test_load_weights(net);
     if(clear) (*net->seen) = 0;
     return net;
 }
@@ -157,10 +157,10 @@ char *get_layer_string(LAYER_TYPE a)
 network *make_network(int n)
 {
     network *net = calloc(1, sizeof(network));
-	printf ("sizeof network : %d\n", sizeof(network));
+	printf ("sizeof network : %d\r\n", sizeof(network));
     net->n = n;
     net->layers = calloc(net->n, sizeof(layer));
-	printf ("layer : %d\n", sizeof(layer));
+	printf ("layer : %d\r\n", sizeof(layer));
     net->seen = calloc(1, sizeof(size_t));
     net->t    = calloc(1, sizeof(int));
     net->cost = calloc(1, sizeof(float));

@@ -68,7 +68,7 @@ void gemm_nn_int8_int16(int M, int N, int K, int8_t ALPHA,
     int8_t *B, int ldb,
     int16_t *C, int ldc)
 {
-	printf("gemm_nn_int8_int16 \n");
+//	printf("gemm_nn_int8_int16 \n");
     int32_t *c_tmp = embed_calloc(N, sizeof(int32_t));
     int i, j, k;
     for (i = 0; i < M; ++i) {

@@ -187,7 +187,7 @@ convolutional_layer make_convolutional_layer(int batch, int h, int w, int c, int
     l.workspace_size = get_workspace_size(l);
     l.activation = activation;
 
-    printf("conv  %5d %2d x%2d /%2d  %4d x%4d x%4d   ->  %4d x%4d x%4d  %5.3f BFLOPs\n", n, size, size, stride, w, h, c, l.out_w, l.out_h, l.out_c, (2.0 * l.n * l.size*l.size*l.c/l.groups * l.out_h*l.out_w)/1000000000.);
+    printf("conv  %5d %2d x%2d /%2d  %4d x%4d x%4d   ->  %4d x%4d x%4d  %5.3f BFLOPs\r\n", n, size, size, stride, w, h, c, l.out_w, l.out_h, l.out_c, (2.0 * l.n * l.size*l.size*l.c/l.groups * l.out_h*l.out_w)/1000000000.);
 
     return l;
 }
@@ -268,7 +268,7 @@ void scale_bias(float *output, float *scales, int batch, int n, int size)
 
 void forward_convolutional_layer(convolutional_layer l, network net)
 {
-//	xil_printf("\n[%s]\r\n",__func__);
+	xil_printf("\n[%s]\r\n",__func__);
     int i, j;
 
     fill_cpu(l.outputs*l.batch, 0, l.output, 1);
@@ -313,7 +313,7 @@ void forward_convolutional_layer(convolutional_layer l, network net)
 
 void forward_convolutional_layer_q(layer l, network net)
 {
-	LOG("");
+	xil_printf("\n[%s]\r\n",__func__);
 
     int out_h = (l.h + 2 * l.pad - l.size) / l.stride + 1;    // output_height=input_height for stride=1 and pad=1
     int out_w = (l.w + 2 * l.pad - l.size) / l.stride + 1;    // output_width=input_width for stride=1 and pad=1
@@ -389,12 +389,6 @@ void forward_convolutional_layer_q(layer l, network net)
         l.output[i] = output_q[i] * ALPHA1;    // cuDNN: alpha1
     }
     embed_free(output_q);
-
-    //for (fil = 0; fil < l.n; ++fil) {
-    //    for (j = 0; j < out_size; ++j) {
-    //        l.output[fil*out_size + j] = l.output[fil*out_size + j] * ALPHA1;
-    //    }
-    //}
 
     // cuDNN: y = alpha1 * conv(x) + bias
     for (fil = 0; fil < l.n; ++fil) {
