@@ -115,7 +115,7 @@ struct layer {
     ACTIVATION activation;
     COST_TYPE cost_type;
     void (*forward)   (struct layer, struct network);
-//    void (*backward)  (struct layer, struct network);
+    void (*backward)  (struct layer, struct network);
     void (*update)    (struct layer, update_args);
     int batch_normalize;
     int shortcut;
@@ -236,6 +236,8 @@ struct layer {
 	int8_t * weights_int8;
     float * weight_updates;
 	int8_t * output_int8;
+	float weights_quant_multipler;
+	float input_quant_multipler;
 
     float * delta;
     float * output;
@@ -531,6 +533,7 @@ typedef enum {
 } learning_rate_policy;
 
 typedef struct network{
+	int quantized;
     int n;
     int batch;
     size_t *seen;
@@ -580,6 +583,7 @@ typedef struct network{
     tree *hierarchy;
 
     float *input;
+	int8_t *input_int8;
     float *truth;
     float *delta;
     float *workspace;
@@ -636,7 +640,6 @@ typedef struct network_q {
 	float saturation;
 	float hue;
 
-	int gpu_index;
 	tree *hierarchy;
 	int do_input_calibration;
 } network_q;
@@ -756,7 +759,7 @@ typedef struct cfg_section {
 
 network *load_network(char *cfg, char *weights, int clear);
 #ifdef TEST
-network *test_load_network(cfg_section *cfg, int size, int clear);
+network *embed_load_network(cfg_section *cfg, int size, int clear, int quantized);
 #endif
 load_args get_base_args(network *net);
 
@@ -852,7 +855,7 @@ int option_find_int(list *l, char *key, int def);
 int option_find_int_quiet(list *l, char *key, int def);
 
 #ifdef TEST
-network *test_network_cfg(cfg_section *cfg, int size);
+network *embed_parse_network_cfg(cfg_section *cfg, int size, int quantized);
 #endif
 network *parse_network_cfg(char *filename);
 void save_weights(network *net, char *filename);

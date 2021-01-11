@@ -2,7 +2,9 @@
 //#include "utils.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
+#include "math.h"
+
+#define R_MULT (32)    // 4 - 32
 
 void gemm_bin(int M, int N, int K, float ALPHA, 
         char  *A, int lda, 
@@ -60,6 +62,29 @@ float *random_matrix(int rows, int cols)
 //    free(c);
 //}
 //
+
+void gemm_nn_int8_int16(int M, int N, int K, int8_t ALPHA,
+    int8_t *A, int lda,
+    int8_t *B, int ldb,
+    int16_t *C, int ldc)
+{
+	printf("gemm_nn_int8_int16 \n");
+    int32_t *c_tmp = embed_calloc(N, sizeof(int32_t));
+    int i, j, k;
+    for (i = 0; i < M; ++i) {
+        for (k = 0; k < K; ++k) {
+            register int16_t A_PART = ALPHA*A[i*lda + k];
+            for (j = 0; j < N; ++j) {
+                c_tmp[j] += A_PART*B[k*ldb + j];
+            }
+        }
+        for (j = 0; j < N; ++j) {
+            C[i*ldc + j] += max_abs(c_tmp[j] / (R_MULT), (256 * 128 - 1));
+            c_tmp[j] = 0;
+        }
+    }
+    embed_free(c_tmp);
+}
 
 void gemm(int TA, int TB, int M, int N, int K, float ALPHA, 
         float *A, int lda, 

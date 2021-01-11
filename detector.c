@@ -55,13 +55,13 @@ unsigned char *yolov3_tiny_weights = weights ;
 #endif
 
 
-void test_detector(float thresh, float hier_thresh)
+void test_detector(float thresh, float hier_thresh, int quantized)
 {
 //    char **names = (char **)coco_name_array;
     //image **alphabet = load_alphabet();
 //    memset(yolov3_tiny_weights,0, yolov3_tiny_weights_len);
 
-    network *net = test_load_network(CONFIGURE, CONFIGURE_SIZE, 0);
+    network *net = embed_load_network(CONFIGURE, CONFIGURE_SIZE, 0, quantized);
 	double start, end;
 
     set_batch_network(net, 1);

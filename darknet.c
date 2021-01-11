@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-extern void test_detector(float thresh, float hier_thresh);
+extern void test_detector(float thresh, float hier_thresh, int quantized);
 
 
 #ifdef OPENSSD
@@ -16,6 +16,6 @@ int main (int argc, char **argv)
 #endif
 	float thresh = 0.5f;
 	xil_printf("thresh %f\n",thresh);
-	test_detector(thresh, .5);
+	test_detector(thresh, .5, 1);
 }
 

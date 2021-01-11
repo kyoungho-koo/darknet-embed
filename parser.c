@@ -429,11 +429,12 @@ void parse_net_sections(kvp *section, int size, network *net)
     net->max_batches = __section_find_int(section, size, "max_batches", 0);
 }
 
-network *test_network_cfg(cfg_section *cfg, int size)
+network *embed_parse_network_cfg(cfg_section *cfg, int size, int quantized)
 {
     size_params params;
 
     network *net = make_network(size - 1);
+	net->quantized = quantized;
 	parse_net_sections(cfg[0].section, cfg[0].size, net);
 	LOG_ARG("%d %f %f %f", 
 			net->batch, 
@@ -444,6 +445,7 @@ network *test_network_cfg(cfg_section *cfg, int size)
     params.h = net->h;
     params.w = net->w;
     params.c = net->c;
+	params.quantized = quantized;
     params.inputs = net->inputs;
     params.batch = net->batch;
     params.time_steps = net->time_steps;

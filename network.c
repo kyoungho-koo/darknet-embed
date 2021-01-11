@@ -35,11 +35,11 @@ load_args get_base_args(network *net)
 }
 
 #ifdef TEST
-network *test_load_network(cfg_section *cfg, int size, int clear)
+network *embed_load_network(cfg_section *cfg, int size, int clear, int quantized)
 {
     //network *net = parse_network_cfg(cfg);
 	xil_printf("[%s]\n",__func__);
-    network *net = test_network_cfg(cfg, size);
+    network *net = embed_parse_network_cfg(cfg, size, quantized);
 	test_load_weights(net);
     if(clear) (*net->seen) = 0;
     return net;
