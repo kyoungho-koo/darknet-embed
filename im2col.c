@@ -24,7 +24,7 @@ void im2col_cpu(float* data_im,
      int channels,  int height,  int width,
      int ksize,  int stride, int pad, float* data_col) 
 {
-//	xil_printf("\n[%s] \r\n",__func__);
+	xil_printf("[%s] \r\n",__func__);
     int c,h,w;
     int height_col = (height + 2*pad - ksize) / stride + 1;
     int width_col = (width + 2*pad - ksize) / stride + 1;

@@ -18,7 +18,7 @@ route_layer make_route_layer(int batch, int n, int *input_layers, int *input_siz
         printf(" %d", input_layers[i]);
         outputs += input_sizes[i];
     }
-    printf("\n");
+    printf("\r\n");
     l.outputs = outputs;
     l.inputs = outputs;
     l.delta =  embed_calloc(outputs*batch, sizeof(float));

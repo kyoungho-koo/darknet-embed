@@ -448,7 +448,7 @@ network *test_network_cfg(cfg_section *cfg, int size)
     size_t workspace_size = 0;
     int count = 0;
     int i;
-    printf ("layer     filters    size              input                output\n");
+    printf ("layer     filters    size              input                output\r\n");
 	for (i = 1; i < size; i++) {
         params.index = count;
         printf("%5d ", count);
