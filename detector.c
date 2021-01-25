@@ -8,7 +8,7 @@ static int coco_ids[] = {1,2,3,4,5,6,7,8,9,10,11,13,14,15,16,17,18,19,20,21,22,2
 extern char *coco_name_array[];
 
 
-#define YOLO_LITE
+#define YOLO_LITE_MOBILENET
 
 #if defined(YOLOV3_TINY_24_LAYER)
 extern cfg_section yolov3_tiny_cfg[];
@@ -35,6 +35,11 @@ extern cfg_section yolo_lite_cfg[];
 extern int yolo_lite_cfg_size;
 #define CONFIGURE yolo_lite_cfg
 #define CONFIGURE_SIZE yolo_lite_cfg_size
+#elif defined(YOLO_LITE_MOBILENET)
+extern cfg_section yolo_lite_mobilenet_cfg[];
+extern int yolo_lite_mobilenet_cfg_size;
+#define CONFIGURE yolo_lite_mobilenet_cfg
+#define CONFIGURE_SIZE yolo_lite_mobilenet_cfg_size
 #endif
 
 

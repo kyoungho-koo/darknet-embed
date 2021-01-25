@@ -42,7 +42,7 @@ CFLAGS+=$(OPTS)
 #JATA TEMP
 CFLAGS+=-g
 
-OBJ=gemm.o utils.o  convolutional_layer.o activations.o im2col.o col2im.o blas.o maxpool_layer.o softmax_layer.o matrix.o network.o cost_layer.o parser.o route_layer.o upsample_layer.o box.o layer.o local_layer.o logistic_layer.o batchnorm_layer.o tree.o  l2norm_layer.o yolo_layer.o calloc.o detector.o darknet.o coco.o yolov3-tiny-cfg.o dog_array.o test_1_cfg.o test_2_cfg.o test_3_cfg.o yolo_lite_cfg.o math.o
+OBJ=gemm.o utils.o  convolutional_layer.o activations.o im2col.o col2im.o blas.o maxpool_layer.o softmax_layer.o matrix.o network.o cost_layer.o parser.o route_layer.o upsample_layer.o box.o layer.o local_layer.o logistic_layer.o batchnorm_layer.o tree.o  l2norm_layer.o yolo_layer.o calloc.o detector.o darknet.o coco.o yolov3-tiny-cfg.o dog_array.o test_1_cfg.o test_2_cfg.o test_3_cfg.o yolo_lite_cfg.o math.o yolo_lite_mobilenet_cfg.o
 
 #EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
 OBJS = $(addprefix $(OBJDIR), $(OBJ))
