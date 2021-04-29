@@ -1,6 +1,4 @@
 #include "darknet.h"
-
-//#include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -16,6 +14,6 @@ int main (int argc, char **argv)
 #endif
 	float thresh = 0.5f;
 	xil_printf("thresh %f\n",thresh);
-	test_detector(thresh, .5, 1);
+	test_detector(thresh, .5, 0);
 }
 
